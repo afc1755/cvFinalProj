@@ -72,6 +72,7 @@ def largeTestModel():
         elif city == 3:
             cityName = "NEW YORK CITY"
         print(img + " : " + cityName + ", confidence: " + str(confidence))
+
     print("\n\nCHICAGO tests")
     print("---------------------------")
     for img in os.listdir("test/CHICAGO"):
@@ -93,6 +94,7 @@ def largeTestModel():
         elif city == 3:
             cityName = "NEW YORK CITY"
         print(img + " : " + cityName + ", confidence: " + str(confidence))
+
     print("\n\nLOS ANGELES tests")
     print("---------------------------")
     for img in os.listdir("test/LA"):
@@ -137,8 +139,11 @@ def largeTestModel():
             cityName = "NEW YORK CITY"
         print(img + " : " + cityName + ", confidence: " + str(confidence))
 
-
-
+#test pictures:
+#Boston: BOSTON/1.jpg
+#Chicago: CHICAGO/4.jpg
+#LA: LA/1.jpg
+#NY: NY/3.jpeg
 def testModel():
     json_file = open('model2.json', 'r')
     loaded_model_json = json_file.read()
@@ -167,5 +172,5 @@ def testModel():
         print(imageName + " : " + cityName + ", confidence: " + str(confidence))
 
 #train()
-largeTestModel()
-#testModel()
+#largeTestModel()
+testModel()
