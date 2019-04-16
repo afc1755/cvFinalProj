@@ -31,7 +31,7 @@ def train():
     test_set = test_datagen.flow_from_directory('test_set', target_size=(64, 64), batch_size=32,\
                                                 class_mode='categorical')
 
-    classifier.fit_generator(training_set, steps_per_epoch=512, epochs=2, validation_data=test_set, validation_steps=149)
+    classifier.fit_generator(training_set, steps_per_epoch=512, epochs=15, validation_data=test_set, validation_steps=149)
 
     #save our classifier after training
     model_json = classifier.to_json()
@@ -193,6 +193,6 @@ def testModel():
             cityName = "NEW YORK CITY"
         print(imageName + " : " + cityName + ", confidence: " + str(confidence))
 
-#train()
-largeTestModel()
+train()
+#largeTestModel()
 #testModel()
