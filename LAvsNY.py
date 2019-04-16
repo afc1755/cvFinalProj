@@ -2,15 +2,15 @@
 #Computer Vision Final Project Proof of Concept
 import os
 import numpy as np
-from keras.preprocessing import image
+from tensorflow.keras.preprocessing import image
 from keras_preprocessing.image import ImageDataGenerator
-from keras.models import Sequential
-from keras.layers import Conv2D
-from keras.layers import MaxPooling2D
-from keras.layers import Flatten
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.layers import LeakyReLU
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import MaxPooling2D
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.layers import LeakyReLU
 
 def LAvsNY():
     classifier = Sequential()
