@@ -6,7 +6,7 @@ from keras.engine.saving import model_from_json
 from keras.preprocessing import image
 from keras_preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
-from keras.layers import Conv2D
+from keras.layers import Conv2D, BatchNormalization
 from keras.layers import MaxPooling2D
 from keras.layers import Flatten
 from keras.layers import Dense
@@ -14,40 +14,49 @@ from keras.layers import Dropout
 
 def train():
     classifier = Sequential()
-    classifier.add(Conv2D(32, (3,3), input_shape=(64,64,3), activation='relu'))
-    classifier.add(MaxPooling2D(pool_size = (2,2)))
+    classifier.add(Conv2D(64, (3, 3), input_shape=(64, 64, 3), activation='relu'))
+    classifier.add(MaxPooling2D(pool_size=(2, 2)))
+    classifier.add(BatchNormalization())
+    classifier.add(Conv2D(64, (3, 3), activation='relu'))
+    classifier.add(MaxPooling2D(pool_size=(2, 2)))
+    classifier.add(BatchNormalization())
+    classifier.add(Conv2D(64, (3, 3), activation='relu'))
+    classifier.add(MaxPooling2D(pool_size=(2, 2)))
+    classifier.add(BatchNormalization())
+    classifier.add(Conv2D(32, (3, 3), activation='relu'))
+    classifier.add(MaxPooling2D(pool_size=(2, 2)))
+    classifier.add(BatchNormalization())
+    classifier.add(Dropout(0.2))
     classifier.add(Flatten())
-    classifier.add(Dense(100, activation='relu'))
-    classifier.add(Dropout(0.5))
-    classifier.add(Dense(50, activation='relu'))
+    classifier.add(Dense(128, activation='relu'))
     classifier.add(Dropout(0.3))
-    classifier.add(Dense(units=4, activation='softmax'))
+    classifier.add(Dense(4, activation='softmax'))
     classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
     train_datagen = ImageDataGenerator(rescale=1./255, shear_range=0.2, horizontal_flip=True)
     test_datagen = ImageDataGenerator(rescale=1./255, shear_range=0.2, horizontal_flip=True)
-    training_set = train_datagen.flow_from_directory('training_set', target_size=(64,64),batch_size=32,\
-                                                     class_mode='categorical')
-    test_set = test_datagen.flow_from_directory('test_set', target_size=(64, 64), batch_size=32,\
-                                                class_mode='categorical')
+    training_set = train_datagen.flow_from_directory('training_set', target_size=(64, 64), batch_size=32,
+                                                     class_mode='categorical', shuffle=True)
+    test_set = test_datagen.flow_from_directory('test_set', target_size=(64, 64), batch_size=32,
+                                                class_mode='categorical', shuffle=True)
 
-    classifier.fit_generator(training_set, steps_per_epoch=280, epochs=25, validation_data=test_set, validation_steps=71)
+    classifier.fit_generator(training_set, steps_per_epoch=279, epochs=10, validation_data=test_set, validation_steps=71)
 
     #save our classifier after training
     model_json = classifier.to_json()
-    with open("model3.json", "w") as json_file:
+    with open("model4.json", "w") as json_file:
         json_file.write(model_json)
     # serialize weights to HDF5
-    classifier.save_weights("model3.h5")
+    classifier.save_weights("model4.h5")
     print("Saved model to disk")
 
 def largeTestModel():
-    json_file = open('model2.json', 'r')
+    json_file = open('model3.json', 'r')
     loaded_model_json = json_file.read()
     json_file.close()
     loaded_model = model_from_json(loaded_model_json)
     # load weights into new model
-    loaded_model.load_weights("model2.h5")
+    loaded_model.load_weights("model3.h5")
     print("Loaded model from disk")
 
     # evaluate loaded model on test data
@@ -83,11 +92,11 @@ def largeTestModel():
     print("---------------------------")
     right = 0.0
     total = 0.0
-    for img in os.listdir("test/CHICAGO"):
+    for img in os.listdir("test_set/CHICAGO"):
         total += 1
         if img[0] == ".":
             continue
-        test_image = image.load_img('test/CHICAGO/' + img, target_size=(64, 64))
+        test_image = image.load_img('test_set/CHICAGO/' + img, target_size=(64, 64))
         test_image = image.img_to_array(test_image)
         test_image = np.expand_dims(test_image, axis=0)
         result = loaded_model.predict(test_image)
@@ -111,11 +120,11 @@ def largeTestModel():
     print("---------------------------")
     right = 0.0
     total = 0.0
-    for img in os.listdir("test/LA"):
+    for img in os.listdir("test_set/LA"):
         total += 1
         if img[0] == ".":
             continue
-        test_image = image.load_img('test/LA/' + img, target_size=(64, 64))
+        test_image = image.load_img('test_set/LA/' + img, target_size=(64, 64))
         test_image = image.img_to_array(test_image)
         test_image = np.expand_dims(test_image, axis=0)
         result = loaded_model.predict(test_image)
@@ -138,11 +147,11 @@ def largeTestModel():
     print("---------------------------")
     right = 0.0
     total = 0.0
-    for img in os.listdir("test/NY"):
+    for img in os.listdir("test_set/NY"):
         total += 1
         if img[0] == ".":
             continue
-        test_image = image.load_img('test/NY/' + img, target_size=(64, 64))
+        test_image = image.load_img('test_set/NY/' + img, target_size=(64, 64))
         test_image = image.img_to_array(test_image)
         test_image = np.expand_dims(test_image, axis=0)
         result = loaded_model.predict(test_image)
