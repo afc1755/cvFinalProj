@@ -1,0 +1,26 @@
+<annotation>
+	<folder>NY_LESS</folder>
+	<filename>ny_148.jpg</filename>
+	<path>C:\Users\Sean\programstuff\buildingdetect\train_images\ny_148.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>660</width>
+		<height>412</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>wtc</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>290</xmin>
+			<ymin>1</ymin>
+			<xmax>359</xmax>
+			<ymax>375</ymax>
+		</bndbox>
+	</object>
+</annotation>
