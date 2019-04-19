@@ -51,12 +51,14 @@ def train():
     print("Saved model to disk")
 
 def largeTestModel():
-    json_file = open('model3.json', 'r')
+    totalCorrect = 0.0
+    overallTotal = 0.0
+    json_file = open('model2.json', 'r')
     loaded_model_json = json_file.read()
     json_file.close()
     loaded_model = model_from_json(loaded_model_json)
     # load weights into new model
-    loaded_model.load_weights("model3.h5")
+    loaded_model.load_weights("model2.h5")
     print("Loaded model from disk")
 
     # evaluate loaded model on test data
@@ -86,6 +88,8 @@ def largeTestModel():
         elif city == 3:
             cityName = "NEW YORK CITY"
         print(img + " : " + cityName + ", confidence: " + str(confidence))
+    totalCorrect += right
+    overallTotal += total
     print("overall correct: " + str(right/total))
 
     print("\n\nCHICAGO tests")
@@ -113,6 +117,8 @@ def largeTestModel():
         elif city == 3:
             cityName = "NEW YORK CITY"
         print(img + " : " + cityName + ", confidence: " + str(confidence))
+    totalCorrect += right
+    overallTotal += total
     print("overall correct: " + str(right / total))
 
 
@@ -141,6 +147,8 @@ def largeTestModel():
         elif city == 3:
             cityName = "NEW YORK CITY"
         print(img + " : " + cityName + ", confidence: " + str(confidence))
+    totalCorrect += right
+    overallTotal += total
     print("overall correct: " + str(right / total))
 
     print("\n\nNEW YORK tests")
@@ -168,7 +176,11 @@ def largeTestModel():
             cityName = "NEW YORK CITY"
             right += 1
         print(img + " : " + cityName + ", confidence: " + str(confidence))
+    totalCorrect += right
+    overallTotal += total
     print("overall correct: " + str(right / total))
+
+    print("for all cities: overall correct: " + str(totalCorrect / overallTotal))
 
 #test pictures for model2:
 #Boston: BOSTON/1.jpg
@@ -202,6 +214,9 @@ def testModel():
             cityName = "NEW YORK CITY"
         print(imageName + " : " + cityName + ", confidence: " + str(confidence))
 
-train()
-#largeTestModel()
-#testModel()
+#train()
+prompt = input("enter many for multi-test or one for individual test:")
+if prompt == "1" or prompt == "one" or prompt == "o":
+    testModel()
+else:
+    largeTestModel()

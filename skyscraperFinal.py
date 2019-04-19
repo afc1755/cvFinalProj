@@ -188,5 +188,8 @@ def testModel():
         print(imageName + " : " + cityName + ", confidence: " + str(confidence))
 
 #train()
-largeTestModel()
-#testModel()
+prompt = input("enter many for multi-test or one for individual test:")
+if prompt == "1" or prompt == "one" or prompt == "o":
+    testModel()
+else:
+    largeTestModel()
